@@ -57,10 +57,26 @@ public class FreqTradeMainRunner {
     @Autowired
     private TelegramService telegramService;
 
+    public FreqTradeMainRunner(
+            State state,
+            FreqTradeProperties properties,
+            AnalyzeService analyzeService,
+            FreqTradeExchangeService exchangeService,
+            TradeService tradeService,
+            TelegramService telegramService
+    ) {
+        this.state = state;
+        this.properties = properties;
+        this.analyzeService = analyzeService;
+        this.exchangeService = exchangeService;
+        this.tradeService = tradeService;
+        this.telegramService = telegramService;
+    }
+
     /**
      * Queries the persistence layer for open trades and handles them, otherwise a new trade is created.
      */
-    private void process() {
+    protected void process() {
         try {
             // Query trades from persistence layer
             List<TradeEntity> trades = tradeService.findAllOpenTrade();
@@ -105,7 +121,7 @@ public class FreqTradeMainRunner {
      * @param trade Trade
      * @return true if trade has been closed else False
      */
-    private boolean closeTradeIfFulfilled(TradeEntity trade) {
+    protected boolean closeTradeIfFulfilled(TradeEntity trade) {
         // If we don't have an open order and the close rate is already set,
         // we can close this trade.
         if (Objects.nonNull(trade.getCloseProfit())
@@ -129,7 +145,7 @@ public class FreqTradeMainRunner {
      * @throws IOException if any I/O error occurs while contacting the exchange
      * @throws TelegramApiException if any error occur while using the Telegram API
      */
-    private void executeSell(TradeEntity trade, BigDecimal currentRate) throws IOException, TelegramApiException {
+    protected void executeSell(TradeEntity trade, BigDecimal currentRate) throws IOException, TelegramApiException {
         // Get available balance
         String currency = trade.getPair().split("/")[1];
         BigDecimal balance = exchangeService.getBalance(Currency.getInstance(currency));
@@ -152,7 +168,7 @@ public class FreqTradeMainRunner {
      *
      * @return true if bot should sell at current rate
      */
-    private boolean shouldSell(TradeEntity trade, BigDecimal currentRate, LocalDateTime currentTime) {
+    protected boolean shouldSell(TradeEntity trade, BigDecimal currentRate, LocalDateTime currentTime) {
         BigDecimal currentProfit = currentRate.subtract(trade.getOpenRate()).divide(trade.getOpenRate());
 
         if (Objects.nonNull(properties.getStopLoss()) && currentProfit.compareTo(properties.getStopLoss()) < 0) {
@@ -185,7 +201,7 @@ public class FreqTradeMainRunner {
      * @throws IOException if any I/O error occurs while contacting the exchange
      * @throws TelegramApiException if any error occurs while using Telegram API
      */
-    private void handleTrade(TradeEntity trade) throws IOException, TelegramApiException {
+    protected void handleTrade(TradeEntity trade) throws IOException, TelegramApiException {
         if (!trade.getOpen()) {
             LOGGER.warn("attempt to handle closed trade: {}", trade);
             return;
@@ -203,7 +219,7 @@ public class FreqTradeMainRunner {
     /**
      * Calculates bid target between current ask price and last price
      */
-    private BigDecimal getTargetBid(Ticker ticker) {
+    protected BigDecimal getTargetBid(Ticker ticker) {
         if (ticker.getAsk().compareTo(ticker.getLast()) < 0) {
             return ticker.getAsk();
         }
@@ -222,7 +238,7 @@ public class FreqTradeMainRunner {
      * @throws IOException if any I/O error occurs while contacting the exchange
      * @throws TelegramApiException if any error occurs while using Telegram API
      */
-    private Optional<TradeEntity> createTrade(BigDecimal stakeAmount, String exchange) throws IOException, TelegramApiException {
+    protected Optional<TradeEntity> createTrade(BigDecimal stakeAmount, String exchange) throws IOException, TelegramApiException {
         LOGGER.info("Creating new trade with stake_amount: {} ...", stakeAmount);
         List<CurrencyPair> whitelist = properties.getPairWhitelist();
         // Check if stake_amount is fulfilled
