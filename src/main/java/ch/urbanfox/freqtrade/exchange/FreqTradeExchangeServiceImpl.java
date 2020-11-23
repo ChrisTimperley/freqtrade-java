@@ -51,7 +51,6 @@ public class FreqTradeExchangeServiceImpl implements FreqTradeExchangeService {
     @Autowired
     public FreqTradeExchangeServiceImpl(FreqTradeProperties properties, Exchange exchange) {
         this.properties = properties;
-
         this.exchange = exchange;
 
         marketDataService = (BittrexMarketDataService) exchange.getMarketDataService();
@@ -69,6 +68,18 @@ public class FreqTradeExchangeServiceImpl implements FreqTradeExchangeService {
                 throw new FreqTradeExchangeInitializationException("Pair: " + pair + " is not available");
             }
         }
+    }
+
+    public FreqTradeExchangeServiceImpl(FreqTradeProperties properties,
+                                        Exchange exchange,
+                                        BittrexMarketDataService marketDataService,
+                                        AccountService accountService,
+                                        TradeService tradeService) {
+        this.properties = properties;
+        this.exchange = exchange;
+        this.marketDataService = marketDataService;
+        this.accountService = accountService;
+        this.tradeService = tradeService;
     }
 
     @Override
