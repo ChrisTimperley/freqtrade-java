@@ -58,14 +58,12 @@ public class FreqTradeMainRunner {
     private TelegramService telegramService;
 
     public FreqTradeMainRunner(
-            State state,
             FreqTradeProperties properties,
             AnalyzeService analyzeService,
             FreqTradeExchangeService exchangeService,
             TradeService tradeService,
             TelegramService telegramService
     ) {
-        this.state = state;
         this.properties = properties;
         this.analyzeService = analyzeService;
         this.exchangeService = exchangeService;
