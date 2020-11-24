@@ -20,6 +20,12 @@ public class StopCommandHandler extends AbstractCommandHandler {
     @Autowired
     private TelegramService telegramService;
 
+    public StopCommandHandler(FreqTradeMainRunner runner,
+                              TelegramService telegramService) {
+        this.runner = runner;
+        this.telegramService = telegramService;
+    }
+
     @Override
     public String getCommandName() {
         return "/stop";
