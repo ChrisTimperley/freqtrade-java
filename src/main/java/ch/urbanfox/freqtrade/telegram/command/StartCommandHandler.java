@@ -1,5 +1,6 @@
 package ch.urbanfox.freqtrade.telegram.command;
 
+import ch.urbanfox.freqtrade.exchange.FreqTradeExchangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,12 @@ public class StartCommandHandler extends AbstractCommandHandler {
 
     @Autowired
     private TelegramService telegramService;
+
+    public StartCommandHandler(FreqTradeMainRunner runner,
+                               TelegramService telegramService) {
+        this.runner = runner;
+        this.telegramService = telegramService;
+    }
 
     @Override
     public String getCommandName() {

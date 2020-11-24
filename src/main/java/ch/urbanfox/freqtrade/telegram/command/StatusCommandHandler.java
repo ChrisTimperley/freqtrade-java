@@ -38,6 +38,16 @@ public class StatusCommandHandler extends AbstractCommandHandler {
     @Autowired
     private TelegramService telegramService;
 
+    public StatusCommandHandler(FreqTradeMainRunner runner,
+                                FreqTradeExchangeService exchangeService,
+                                TradeService tradeService,
+                                TelegramService telegramService) {
+        this.runner = runner;
+        this.exchangeService = exchangeService;
+        this.tradeService = tradeService;
+        this.telegramService = telegramService;
+    }
+
     @Override
     public String getCommandName() {
         return "/status";
