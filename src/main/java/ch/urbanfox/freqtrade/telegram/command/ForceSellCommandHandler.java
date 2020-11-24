@@ -40,6 +40,16 @@ public class ForceSellCommandHandler extends AbstractCommandHandler {
     @Autowired
     private TelegramService telegramService;
 
+    public ForceSellCommandHandler(FreqTradeMainRunner runner,
+                                   FreqTradeExchangeService exchangeService,
+                                   TradeService tradeService,
+                                   TelegramService telegramService) {
+        this.runner = runner;
+        this.exchangeService = exchangeService;
+        this.tradeService = tradeService;
+        this.telegramService = telegramService;
+    }
+
     @Override
     public String getCommandName() {
         return "/forcesell";
