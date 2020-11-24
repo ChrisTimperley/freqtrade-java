@@ -39,6 +39,14 @@ public class PerformanceCommandHandler extends AbstractCommandHandler {
     @Autowired
     private TelegramService telegramService;
 
+    public PerformanceCommandHandler(FreqTradeMainRunner runner,
+                                     TradeService tradeService,
+                                     TelegramService telegramService) {
+        this.runner = runner;
+        this.tradeService = tradeService;
+        this.telegramService = telegramService;
+    }
+
     @Override
     public String getCommandName() {
         return "/performance";
