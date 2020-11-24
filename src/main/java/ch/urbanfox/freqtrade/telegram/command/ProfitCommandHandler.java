@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
+import ch.urbanfox.freqtrade.FreqTradeMainRunner;
 import org.apache.commons.lang3.tuple.Pair;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,14 @@ public class ProfitCommandHandler extends AbstractCommandHandler {
 
     @Autowired
     private TelegramService telegramService;
+
+    public ProfitCommandHandler(FreqTradeExchangeService exchangeService,
+                                TradeService tradeService,
+                                TelegramService telegramService) {
+        this.exchangeService = exchangeService;
+        this.tradeService = tradeService;
+        this.telegramService = telegramService;
+    }
 
     @Override
     public String getCommandName() {

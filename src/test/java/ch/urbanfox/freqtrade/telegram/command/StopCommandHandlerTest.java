@@ -1,7 +1,8 @@
-package ch.urbanfox.freqtrade;
+package ch.urbanfox.freqtrade.telegram.command;
 
 import static org.easymock.EasyMock.*;
 
+import ch.urbanfox.freqtrade.FreqTradeMainRunner;
 import ch.urbanfox.freqtrade.telegram.command.StopCommandHandler;
 import ch.urbanfox.freqtrade.telegram.TelegramService;
 import org.junit.Before;
